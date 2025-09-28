@@ -1,0 +1,28 @@
+# Dependencias de Node
+node_modules/
+
+# Archivos de logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Base de datos local (SQLite)
+db/*.db
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Entornos y variables sensibles
+.env
+.env.local
+.env.*.local
+
+# Cachés
+.cache/
+.tmp/
+dist/
+
+# Archivos de compilación (TypeScript)
+*.tsbuildinfo

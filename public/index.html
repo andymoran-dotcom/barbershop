@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Barbershop</title>
+  <style>
+    /* Tipografía y colores */
+    body { margin:0; font-family:'Arial',sans-serif; background:#111; color:#eee; scroll-behavior: smooth; }
+    a { text-decoration:none; color:inherit; }
+
+    /* Navbar */
+    nav { position: fixed; width:100%; top:0; left:0; background: rgba(17,17,17,0.95); display:flex; justify-content:center; gap:30px; padding:15px 0; z-index:1000; font-weight:bold; color:#ffd700; transition:background 0.3s; }
+    nav a:hover { color:#fff; }
+    nav.scrolled { background:#000; }
+
+    /* Hero con parallax */
+    header { position: relative; height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; color:#ffd700; background: url('img/hero.jpg') no-repeat center/cover; background-attachment: fixed; }
+    header h1 { font-size:4rem; margin:0; text-shadow:2px 2px 8px #000; animation: fadeInDown 1.2s ease forwards; opacity:0; }
+    header p { font-size:1.5rem; margin:10px 0 30px; text-shadow:1px 1px 5px #000; animation: fadeInUp 1.5s ease forwards; opacity:0; }
+    header .btn { background:#ffd700; color:#111; padding:15px 30px; border:none; border-radius:10px; font-size:1.2rem; cursor:pointer; transition: transform 0.3s, box-shadow 0.3s; animation: fadeInUp 1.8s ease forwards; opacity:0; }
+    header .btn:hover { transform: scale(1.1); box-shadow:0 0 20px #ffd700; }
+
+    @keyframes fadeInDown { to {opacity:1; transform:translateY(0);} from {opacity:0; transform:translateY(-30px);} }
+    @keyframes fadeInUp { to {opacity:1; transform:translateY(0);} from {opacity:0; transform:translateY(30px);} }
+    .fade-in { opacity:0; transform: translateY(30px); transition: all 0.8s ease; }
+    .fade-in.show { opacity:1; transform: translateY(0); }
+
+    /* Secciones */
+    section { padding:80px 20px; max-width:1200px; margin:auto; }
+    section h2 { font-size:2.5rem; color:#ffd700; text-align:center; margin-bottom:50px; }
+
+    /* Servicios */
+    .servicios { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:30px; }
+    .servicio-card { background:#222; border-radius:15px; overflow:hidden; box-shadow:0 5px 20px #000; transition: transform 0.3s, box-shadow 0.3s; }
+    .servicio-card:hover { transform: translateY(-10px) scale(1.02); box-shadow:0 10px 30px #ffd700; }
+    .servicio-card img { width:100%; height:200px; object-fit:cover; transition: transform 0.5s; }
+    .servicio-card:hover img { transform:scale(1.1); }
+    .servicio-card h3 { text-align:center; padding:15px 0 5px; color:#ffd700; }
+    .servicio-card p { text-align:center; padding:0 15px 15px; }
+
+    /* Precios */
+    .precios { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:30px; }
+    .precio-card { background:#222; padding:25px; border-radius:15px; text-align:center; box-shadow:0 5px 20px #000; transition: transform 0.3s, box-shadow 0.3s; }
+    .precio-card:hover { transform: translateY(-10px); box-shadow:0 10px 30px #ffd700; }
+    .precio-card h3 { color:#ffd700; margin-bottom:15px; }
+    .precio-card p { font-size:1.4rem; }
+
+    /* Reservas */
+    .reserva-form { background:#222; padding:30px; border-radius:15px; max-width:500px; margin:auto; box-shadow:0 5px 20px #000; display:grid; gap:15px; }
+    .reserva-form input, .reserva-form select { padding:15px; border-radius:10px; border:none; width:100%; background:#333; color:#eee; }
+    .reserva-form button { padding:18px; border-radius:10px; border:none; background:#ffd700; color:#111; font-weight:bold; cursor:pointer; transition: transform 0.3s, box-shadow 0.3s; }
+    .reserva-form button:hover { transform: scale(1.05); box-shadow:0 0 20px #ffd700; }
+
+    /* Modal de reserva */
+    #modalReserva { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.7); justify-content:center; align-items:center; z-index:10000; }
+    #modalReserva div { background:#222; padding:30px; border-radius:15px; text-align:center; box-shadow:0 5px 20px #000; color:#ffd700; transform: scale(0); transition: transform 0.4s; }
+
+    /* Contacto */
+    .contacto form { display:grid; gap:15px; max-width:500px; margin:auto; }
+    .contacto input, .contacto textarea { padding:15px; border-radius:10px; border:none; width:100%; background:#333; color:#eee; }
+    .contacto input:focus, .contacto textarea:focus { background:#444; outline:none; }
+    .contacto button { padding:18px; border-radius:10px; border:none; background:#ffd700; color:#111; font-weight:bold; cursor:pointer; transition: transform 0.3s, box-shadow 0.3s; }
+    .contacto button:hover { transform: scale(1.05); box-shadow:0 0 20px #ffd700; }
+
+    /* Footer */
+    footer { text-align:center; padding:30px 20px; background:#111; color:#ffd700; font-weight:bold; }
+  </style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a href="#servicios">Servicios</a>
+  <a href="#precios">Precios</a>
+  <a href="#reservas">Reservas</a>
+  <a href="#contacto">Contacto</a>
+</nav>
+
+<header>
+  <h1>Barbershop</h1>
+  <p>Estilo, corte y confianza en cada visita</p>
+  <a href="#reservas" class="btn">Reservar ahora</a>
+</header>
+
+<section id="servicios">
+  <h2>Servicios</h2>
+  <div class="servicios">
+    <div class="servicio-card fade-in">
+      <img src="img/corte.jpg" alt="Corte de cabello">
+      <h3>Corte de Cabello</h3>
+      <p>Estilo moderno y clásico adaptado a tu look.</p>
+    </div>
+    <div class="servicio-card fade-in">
+      <img src="img/afeitado.jpg" alt="Afeitado">
+      <h3>Afeitado</h3>
+      <p>Afeitado profesional con toallas calientes y precisión.</p>
+    </div>
+    <div class="servicio-card fade-in">
+      <img src="img/barba.jpg" alt="Arreglo de barba">
+      <h3>Arreglo de Barba</h3>
+      <p>Da forma y estilo a tu barba con productos de calidad.</p>
+    </div>
+  </div>
+</section>
+
+<section id="precios">
+  <h2>Precios</h2>
+  <div class="precios">
+    <div class="precio-card fade-in"><h3>Corte de Cabello</h3><p>$15</p></div>
+    <div class="precio-card fade-in"><h3>Afeitado</h3><p>$10</p></div>
+    <div class="precio-card fade-in"><h3>Arreglo de Barba</h3><p>$12</p></div>
+  </div>
+</section>
+
+<section id="reservas">
+  <h2>Reservas</h2>
+  <form class="reserva-form fade-in" id="formReserva">
+    <input type="text" id="nombre" placeholder="Nombre" required>
+    <input type="tel" id="telefono" placeholder="Teléfono" required>
+    <select id="servicio" required>
+      <option value="">Selecciona un servicio</option>
+      <option value="corte">Corte de cabello</option>
+      <option value="afeitado">Afeitado</option>
+      <option value="barba">Arreglo de barba</option>
+    </select>
+    <input type="date" id="fecha" required>
+    <input type="time" id="hora" required>
+    <button type="submit">Reservar</button>
+  </form>
+
+  <!-- Modal de confirmación -->
+  <div id="modalReserva">
+    <div>
+      <h2>✅ Reserva Exitosa!</h2>
+      <p>Gracias por reservar con nosotros. Te esperamos en la barbería.</p>
+    </div>
+  </div>
+</section>
+
+<section id="contacto" class="contacto">
+  <h2>Contacto</h2>
+  <form class="fade-in">
+    <input type="text" placeholder="Nombre" required>
+    <input type="email" placeholder="Correo electrónico" required>
+    <input type="tel" placeholder="Teléfono" required>
+    <textarea rows="5" placeholder="Mensaje" required></textarea>
+    <button type="submit">Enviar</button>
+  </form>
+</section>
+
+<footer>&copy; 2025 Barbershop. Todos los derechos reservados.</footer>
+
+<script>
+  // Navbar scroll
+  window.addEventListener('scroll', () => { document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50); });
+
+  // Fade-in animaciones
+  const faders = document.querySelectorAll('.fade-in');
+  const appearOptions = { threshold:0.3 };
+  const appearOnScroll = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => { if(!entry.isIntersecting) return; entry.target.classList.add('show'); observer.unobserve(entry.target); });
+  }, appearOptions);
+  faders.forEach(fader => appearOnScroll.observe(fader));
+
+  // Enviar reserva al backend y mostrar modal
+  const form = document.getElementById('formReserva');
+  const modal = document.getElementById('modalReserva');
+  const modalContent = modal.querySelector('div');
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const data = {
+      nombre: document.getElementById('nombre').value,
+      telefono: document.getElementById('telefono').value,
+      servicio: document.getElementById('servicio').value,
+      fecha: document.getElementById('fecha').value,
+      hora: document.getElementById('hora').value
+    };
+    const res = await fetch('/api/reservas', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(data)
+    });
+    const result = await res.json();
+    if(result.success){
+      form.reset();
+      modal.style.display = 'flex';
+      setTimeout(()=>{ modalContent.style.transform='scale(1)'; },10);
+      setTimeout(()=>{
+        modalContent.style.transform='scale(0)';
+        setTimeout(()=>{ modal.style.display='none'; },400);
+      },3000);
+    } else {
+      alert('❌ Error al registrar la reserva.');
+    }
+  });
+
+  // Cerrar modal al hacer click fuera
+  modal.addEventListener('click', e=>{
+    if(e.target===modal){
+      modalContent.style.transform='scale(0)';
+      setTimeout(()=>{ modal.style.display='none'; },400);
+    }
+  });
+</script>
+
+</body>
+</html>
